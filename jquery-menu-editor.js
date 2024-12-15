@@ -696,7 +696,7 @@
         {
             if ( $( '#sortableListsHintWrapper', state.rootEl.el ).length )
             {
-                hint.unwrap();  // If hint is wrapped by ul/ol #sortableListsHintWrapper
+                hint.unwrap();  // If hint is wrapped by ul/ol sortableListsHintWrapper
             }
 
             // Hint inside the oEl
@@ -1340,10 +1340,22 @@ function MenuEditor(idSelector, options) {
             return;
         }
         var oldIcon = $cEl.data('icon');
+        
+        // Form verilerini güncelle
         $form.find('.item-menu').each(function() {
-            $cEl.data($(this).attr('name'), $(this).val());
+            var name = $(this).attr('name');
+            var value = $(this).val();
+            $cEl.data(name, value);
+            
+            // Icon için özel kontrol
+            if(name === 'icon') {
+                oldIcon = oldIcon || '';
+                value = value || '';
+                $cEl.find('i').first().removeClass(oldIcon).addClass(value);
+            }
         });
-        $cEl.children().children('i').removeClass(oldIcon).addClass($cEl.data('icon'));
+        
+        // Text güncelleme
         $cEl.find('span.txt').first().text($cEl.data('text'));
         resetForm();
     };
